@@ -10,6 +10,28 @@ int main(int argc, char *argv[])
 
     while (1)
     {
+        
+        
+        printf("Escolha uma opção:\n");
+        printf("1-Inserir\n");
+        printf("2-preorder\n");
+        printf("3-inorder\n");
+        printf("4-posorder\n");
+        printf("5-reverso\n");
+        printf("6-qtdPar\n");
+        printf("7-antecessor\n");
+        printf("8-pai\n");
+        printf("9-remover\n");
+        printf("10-somaPar\n");
+        printf("11-podar\n");
+        printf("12-dobro\n");
+        printf("13-busca\n");
+        printf("14-descendentes\n");
+        printf("15-altura\n");
+        printf("99-sair\n");
+        
+
+        
         scanf("%d", &opcao);
         switch (opcao)
         {
@@ -33,28 +55,28 @@ int main(int argc, char *argv[])
         case 6:
             qtdPar(a);
             break;
-         /*case 7:
+         case 7:
             scanf("%d", &valor);
             printf("antecessor do nó com valor %d:\n", valor);
-            ascendentes(a, valor);
-            break;*/
+            imprimir_antecessor(a, valor);
+            break;
         case 8:
             scanf("%d", &valor);
             printf("Pai do nó com valor %d:\n", valor);
             imprimir_pai(a, valor);
             break;
-        /*case 9:
+        case 9:
             scanf("%d", &valor);
             remover(a, valor);
-            break;*/
+            break;
         case 10:
             soma_par(a);
             break;
 
-        /*case 11:
+        case 11:
             scanf("%d", &valor);
             podar(a, valor);
-            break;*/
+            break;
 
         case 12:
             dobrar_valores(a);
@@ -68,11 +90,9 @@ int main(int argc, char *argv[])
             scanf("%d", &valor);
             descendentes(a, valor);
             break;
-        /*case 15:
-            altura(a);
-            break;*/
-
-
+        case 15:
+            calcularAltura(a);
+            break;
         case 99:
             exit(0);
         }

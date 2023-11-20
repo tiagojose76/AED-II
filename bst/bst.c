@@ -152,76 +152,32 @@ void descendentes(arvore raiz, int valor)
         descendentes(raiz->esq, valor);
     }
 }
-void imprimir_antecessor(arvore raiz, int valor)
-{
+void imprimir_antecessor(arvore raiz, int valor) {
     arvore atual = raiz;
-    int antecessor = -1; // Inicia com -1 para indicar que não existe antecessor
+    int antecessor = -1;
 
-    while (atual != NULL)
-    {
-        if (valor > atual->valor)
-        {
-            antecessor = atual->valor; // Atualiza o antecessor
-            atual = atual->dir;        // Move para a direita, já que o valor é maior
-        }
-        else if (valor < atual->valor)
-        {
-            atual = atual->esq; // Move para a esquerda, não atualiza o antecessor
-        }
-        else
-        {
-            break; // Valor encontrado
+    while (atual != NULL) {
+        if (atual->valor < valor) {
+            // Atualiza o antecessor se o valor atual é menor que o valor alvo
+            antecessor = atual->valor;
+            atual = atual->dir;
+        } else if (atual->valor > valor) {
+            atual = atual->esq;
+        } else { // Quando encontrar o valor
+            if (atual->esq != NULL) {
+                // Encontrar o maior valor na subárvore esquerda
+                arvore temp = atual->esq;
+                while (temp->dir != NULL) {
+                    temp = temp->dir;
+                }
+                antecessor = temp->valor;
+            }
+            break;
         }
     }
 
-    if (atual == NULL)
-    {
-        // O valor não foi encontrado na árvore
-        printf("-1\n");
-    }
-    else
-    {
-        // Imprime o valor do antecessor
-        printf("%d\n", antecessor);
-    }
+    printf("%d\n", antecessor);
 }
-
-arvore podar(arvore raiz, int valor)
-{
-    if (!raiz)
-    {
-        return NULL;
-    }
-
-    if (valor < raiz->valor)
-    {
-        raiz->esq = podar(raiz->esq, valor);
-    }
-    else if (valor > raiz->valor)
-    {
-        raiz->dir = podar(raiz->dir, valor);
-    }
-    else
-    {
-        if (!raiz->esq || !raiz->dir)
-        {
-            arvore temp = raiz->esq ? raiz->esq : raiz->dir;
-            free(raiz);
-            return temp;
-        }
-
-        arvore temp = raiz->dir;
-        while (temp->esq)
-        {
-            temp = temp->esq;
-        }
-
-        raiz->valor = temp->valor;
-        raiz->dir = podar(raiz->dir, temp->valor);
-    }
-    return raiz;
-}
-
 
 
 
@@ -396,3 +352,116 @@ void ascendentes(arvore raiz, int valor) {
     }
     return 1 + (altura_bst(raiz->esq) > altura_bst(raiz->dir) ? altura_bst(raiz->esq) : altura_bst(raiz->dir));
 }*/
+
+arvore remover(arvore raiz, int valor) {
+    // Caso base: árvore vazia
+    if (raiz == NULL) {
+        return raiz;
+    }
+
+    // Procurar o nó a ser removido
+    if (valor < raiz->valor) {
+        raiz->esq = remover(raiz->esq, valor);
+    } else if (valor > raiz->valor) {
+        raiz->dir = remover(raiz->dir, valor);
+    } else {
+        // Caso 1: Nó com um filho ou nenhum filho
+        if (raiz->esq == NULL) {
+            arvore temp = raiz->dir;
+            free(raiz);
+            return temp;
+        } else if (raiz->dir == NULL) {
+            arvore temp = raiz->esq;
+            free(raiz);
+            return temp;
+        }
+
+        // Caso 3: Nó com dois filhos
+        // Encontrar o menor nó da subárvore direita (sucessor in-order)
+        arvore temp = menorNo(raiz->dir);
+
+        // Copiar o valor do sucessor in-order para este nó
+        raiz->valor = temp->valor;
+
+        // Remover o sucessor in-order
+        raiz->dir = remover(raiz->dir, temp->valor);
+    }
+
+    return raiz;
+}
+
+// Função auxiliar para encontrar o menor nó em uma árvore BST
+arvore menorNo(arvore raiz) {
+    // Encontrar o nó mais à esquerda
+    if (raiz->esq != NULL) {
+        return menorNo(raiz->esq);
+    }
+    return raiz;
+}
+
+int calcularAltura(arvore raiz) {
+    // Caso base: árvore vazia
+    if (raiz == NULL) {
+        return 0;
+    }
+    
+    // Caso indutivo: calcular a altura das subárvores esquerda e direita
+    int alturaEsquerda = calcularAltura(raiz->esq);
+    int alturaDireita = calcularAltura(raiz->dir);
+    
+    // Retornar a maior altura entre as subárvores + 1 (contando o nó atual)
+    int alturaAtual = (alturaEsquerda > alturaDireita ? alturaEsquerda : alturaDireita) + 1;
+    
+    // Imprimir a altura atual
+    printf("Altura atual: %d\n", alturaAtual);
+    
+    return alturaAtual;
+}
+
+void ascendentes(arvore raiz, int valor) {
+    // Caso base: árvore vazia ou nó com o valor desejado encontrado
+    if (raiz == NULL || raiz->valor == valor) {
+        return;
+    }
+
+    // Imprimir o valor atual da raiz (ascendente)
+    printf("Ascendente: %d\n", raiz->valor);
+
+    // Caso indutivo: percorrer a árvore até encontrar o nó desejado
+    if (valor < raiz->valor) {
+        ascendentes(raiz->esq, valor);
+    } else {
+        ascendentes(raiz->dir, valor);
+    }
+}
+
+void liberarSubarvore(arvore raiz) {
+    if (raiz == NULL) return;
+
+    // Libera recursivamente a subárvore esquerda e a subárvore direita
+    liberarSubarvore(raiz->esq);
+    liberarSubarvore(raiz->dir);
+
+    // Libera o nó atual
+    free(raiz);
+}
+
+arvore podar(arvore raiz, int valor) {
+    // Caso base: árvore vazia
+    if (raiz == NULL) return NULL;
+
+    // Procurar o nó a ser removido
+    if (valor < raiz->valor) {
+        // Continuar procurando na subárvore esquerda
+        raiz->esq = podar(raiz->esq, valor);
+    } else if (valor > raiz->valor) {
+        // Continuar procurando na subárvore direita
+        raiz->dir = podar(raiz->dir, valor);
+    } else {
+        // Nó encontrado, remover o nó e todos os seus descendentes
+        liberarSubarvore(raiz);
+        return NULL;
+    }
+
+    return raiz;
+}

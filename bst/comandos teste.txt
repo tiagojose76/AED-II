@@ -1,0 +1,3 @@
+ gcc teste_bst.c bst.c -o teste_bst  (Pra compilar)
+ 
+./teste_bst < teste_funcoes.txt > saida_funcoes.txt  (Pra gerar o arquivo com a saida)
