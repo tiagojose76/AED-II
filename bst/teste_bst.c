@@ -33,28 +33,28 @@ int main(int argc, char *argv[])
         case 6:
             qtdPar(a);
             break;
-        case 7:
+         /*case 7:
             scanf("%d", &valor);
             printf("antecessor do nó com valor %d:\n", valor);
             ascendentes(a, valor);
-            break;
+            break;*/
         case 8:
             scanf("%d", &valor);
             printf("Pai do nó com valor %d:\n", valor);
             imprimir_pai(a, valor);
             break;
-        case 9:
+        /*case 9:
             scanf("%d", &valor);
             remover(a, valor);
-            break;
+            break;*/
         case 10:
             soma_par(a);
             break;
 
-        case 11:
+        /*case 11:
             scanf("%d", &valor);
             podar(a, valor);
-            break;
+            break;*/
 
         case 12:
             dobrar_valores(a);
@@ -68,9 +68,10 @@ int main(int argc, char *argv[])
             scanf("%d", &valor);
             descendentes(a, valor);
             break;
-        case 15:
+        /*case 15:
             altura(a);
-            break;
+            break;*/
+
 
         case 99:
             exit(0);
