@@ -152,32 +152,6 @@ void descendentes(arvore raiz, int valor)
         descendentes(raiz->esq, valor);
     }
 }
-/*
-void ascendentes(arvore raiz, int valor) {
-    if (raiz == NULL) {
-        printf("Nó com valor %d não encontrado na árvore.\n", valor);
-        return;
-    }
-
-    if (raiz->valor == valor) {
-        printf("Ascendentes do nó com valor %d:\n", valor);
-        return;
-    }
-
-    if ((raiz->esq != NULL && raiz->esq->valor == valor) || (raiz->dir != NULL && raiz->dir->valor == valor)) {
-        printf("%d\n", raiz->valor);
-        return;
-    }
-
-    if (valor < raiz->valor) {
-        printf("%d\n", raiz->valor);
-        ascendentes(raiz->esq, valor);
-    } else {
-        printf("%d\n", raiz->valor);
-        ascendentes(raiz->dir, valor);
-    }
-}
-*/
 void imprimir_antecessor(arvore raiz, int valor)
 {
     arvore atual = raiz;
@@ -221,11 +195,11 @@ arvore podar(arvore raiz, int valor)
 
     if (valor < raiz->valor)
     {
-        raiz->esq = podar_bst(valor, raiz->esq);
+        raiz->esq = podar(raiz->esq, valor);
     }
     else if (valor > raiz->valor)
     {
-        raiz->dir = podar_bst(valor, raiz->dir);
+        raiz->dir = podar(raiz->dir, valor);
     }
     else
     {
@@ -243,19 +217,13 @@ arvore podar(arvore raiz, int valor)
         }
 
         raiz->valor = temp->valor;
-        raiz->dir = podar_bst(temp->valor, raiz->dir);
+        raiz->dir = podar(raiz->dir, temp->valor);
     }
     return raiz;
 }
 
-int altura(arvore raiz)
-{
-    if (!raiz)
-    {
-        return -1;
-    }
-    return 1 + (altura_bst(raiz->esq) > altura_bst(raiz->dir) ? altura_bst(raiz->esq) : altura_bst(raiz->dir));
-}
+
+
 
 void reverso(arvore raiz)
 {
@@ -313,7 +281,67 @@ void imprimir_pai(arvore raiz, int troca)
     }
 }
 
-arvore remover(arvore raiz, int valor)
+
+int soma_par(arvore raiz)
+{
+    if (raiz == NULL)
+    {
+        return 0;
+    }
+    int soma = 0;
+    if (raiz->valor % 2 == 0)
+    {
+        printf("Nó par encontrado: %d\n", raiz->valor); // Imprime o valor do nó par
+        soma += raiz->valor;
+    }
+    soma += soma_par(raiz->esq);
+    soma += soma_par(raiz->dir);
+    return soma;
+}
+void dobrar_valor(arvore raiz)
+{
+    if (raiz != NULL)
+    {
+        // Dobrar o valor do nó atual
+        raiz->valor *= 2;
+        printf("Valor dobrado: %d\n", raiz->valor); // Imprime o valor dobrado
+
+        // Recursivamente dobrar o valor dos nós da subárvore esquerda
+        dobrar_valor(raiz->esq);
+        // Recursivamente dobrar o valor dos nós da subárvore direita
+        dobrar_valor(raiz->dir);
+    }
+}
+
+
+/*
+void ascendentes(arvore raiz, int valor) {
+    if (raiz == NULL) {
+        printf("Nó com valor %d não encontrado na árvore.\n", valor);
+        return;
+    }
+
+    if (raiz->valor == valor) {
+        printf("Ascendentes do nó com valor %d:\n", valor);
+        return;
+    }
+
+    if ((raiz->esq != NULL && raiz->esq->valor == valor) || (raiz->dir != NULL && raiz->dir->valor == valor)) {
+        printf("%d\n", raiz->valor);
+        return;
+    }
+
+    if (valor < raiz->valor) {
+        printf("%d\n", raiz->valor);
+        ascendentes(raiz->esq, valor);
+    } else {
+        printf("%d\n", raiz->valor);
+        ascendentes(raiz->dir, valor);
+    }
+}
+*/
+
+/*arvore remover(arvore raiz, int valor)
 {
     if (raiz == NULL)
     {
@@ -358,34 +386,13 @@ arvore remover(arvore raiz, int valor)
         raiz->dir = remover(temp->valor, raiz->dir);
     }
     return raiz;
-}
-int soma_par(arvore raiz)
-{
-    if (raiz == NULL)
-    {
-        return 0;
-    }
-    int soma = 0;
-    if (raiz->valor % 2 == 0)
-    {
-        printf("Nó par encontrado: %d\n", raiz->valor); // Imprime o valor do nó par
-        soma += raiz->valor;
-    }
-    soma += soma_par(raiz->esq);
-    soma += soma_par(raiz->dir);
-    return soma;
-}
-void dobrar_valor(arvore raiz)
-{
-    if (raiz != NULL)
-    {
-        // Dobrar o valor do nó atual
-        raiz->valor *= 2;
-        printf("Valor dobrado: %d\n", raiz->valor); // Imprime o valor dobrado
+}*/
 
-        // Recursivamente dobrar o valor dos nós da subárvore esquerda
-        dobrar_valor(raiz->esq);
-        // Recursivamente dobrar o valor dos nós da subárvore direita
-        dobrar_valor(raiz->dir);
+/*int altura(arvore raiz)
+{
+    if (!raiz)
+    {
+        return -1;
     }
-}
+    return 1 + (altura_bst(raiz->esq) > altura_bst(raiz->dir) ? altura_bst(raiz->esq) : altura_bst(raiz->dir));
+}*/

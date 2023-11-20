@@ -30,7 +30,4 @@ void reverso(arvore raiz);
 void imprimir_pai(arvore raiz, int troca);
 void dobrar_valor(arvore raiz);
 
-
-
-
 #endif
